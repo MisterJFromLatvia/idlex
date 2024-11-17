@@ -68,8 +68,10 @@ subcode-toolbar-minus=<Control-Key-minus> <Control-Shift-Key-minus>
 """
 
 import re
-from idlelib.configHandler import idleConf
-from idlelib import macosxSupport
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
+#from idlelib import macosxSupport
+from idlelib import macosx as macosxSupport
 
 import sys
 if sys.version < '3':
@@ -77,7 +79,8 @@ if sys.version < '3':
 else:
     from tkinter import *
 
-import idlelib.ToolTip as ToolTip
+#import idlelib.ToolTip as ToolTip
+import idlelib.tooltip as ToolTip
 from . import SubCode
 
 SUBCODE_STR = SubCode.SUBCODE_STR
@@ -246,7 +249,7 @@ class SubCodeToolbar(object):
                 pass
             i.pack(side='left', **cfg)
             if tooltip is not None:
-                ToolTip.ToolTip(i, ' %s ' % tooltip)
+                ToolTip.Hovertip(i, ' %s ' % tooltip)
 
         self.TB = f
         self.TITLES = toolbar[0][0]  # pointer to the titles button

@@ -100,8 +100,10 @@ else:
     xrange = range
 
 
-from idlelib.EditorWindow import classifyws
-from idlelib.configHandler import idleConf
+#from idlelib.EditorWindow import classifyws
+from idlelib.editor import get_line_indent as classifyws
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
 
 import ast
 import tokenize

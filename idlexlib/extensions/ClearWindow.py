@@ -61,7 +61,8 @@ sp = lambda x: tuple(map(int, x.split('.')))   # convert tkinter Text coordinate
 
 import sys
 import re
-from idlelib.UndoDelegator import DeleteCommand
+#from idlelib.UndoDelegator import DeleteCommand
+from idlelib.undo import DeleteCommand
 
 ansi_re = re.compile(r'\x01?\x1b\[(.*?)m\x02?')
 def strip_ansi(s):

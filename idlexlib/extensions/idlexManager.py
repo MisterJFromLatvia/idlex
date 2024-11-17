@@ -62,8 +62,13 @@ else:
     import tkinter.messagebox as tkMessageBox
     StandardError = Exception
 
-from idlelib.configHandler import idleConf, IdleConfParser
-import idlelib.textView as textView
+#from idlelib.configHandler import idleConf, IdleConfParser
+from idlelib.config import idleConf, IdleConfParser
+#Note: textView is unused in all idlex codebase, it is safe to comment this import out
+#Note: class name is changed to ViewWindow from TextViewer
+#Note: filename textView is changed to textview
+#import idlelib.textView as textView
+import idlelib.textview as textView
 import webbrowser
 
 

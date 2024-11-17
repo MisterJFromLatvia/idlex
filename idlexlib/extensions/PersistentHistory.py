@@ -18,11 +18,13 @@ keep = 500
 
 """
 
-from idlelib.configHandler import idleConf
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
 import pickle
 import os
 import sys
-import idlelib.PyShell as PyShell
+#import idlelib.PyShell as PyShell
+import idlelib.pyshell as PyShell
 
 # TODO: decide if having history tied to the python version is a good thing.
 

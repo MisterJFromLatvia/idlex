@@ -123,9 +123,12 @@ import __future__
 import tempfile
 import shutil
 
-from idlelib import PyShell
-from idlelib.ColorDelegator import ColorDelegator, make_pat
-from idlelib.configHandler import idleConf
+#from idlelib import PyShell
+from idlelib import pyshell as PyShell
+#from idlelib.ColorDelegator import ColorDelegator, make_pat
+from idlelib.colorizer import ColorDelegator, make_pat
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
 
 if sys.version < '3':
     from Tkinter import END, SUNKEN, RAISED, GROOVE, RIDGE, FLAT, INSERT, Menu

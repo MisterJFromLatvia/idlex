@@ -60,9 +60,12 @@ if sys.version < '3':
 else:
     from tkinter import END, Text, LEFT, Y, NONE, RIGHT, NORMAL, DISABLED, Label, TOP, Frame, X
 
-from idlelib.configHandler import idleConf
-from idlelib.Delegator import Delegator
-from idlelib.Percolator import Percolator
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
+#from idlelib.Delegator import Delegator
+from idlelib.delegator import Delegator
+#from idlelib.Percolator import Percolator
+from idlelib.percolator import Percolator
 
 
 FONTUPDATEINTERVAL = 1000   # milliseconds
@@ -206,10 +209,12 @@ class LineNumbers(object):
         return "break"
 
     def show(self):
-        self.textln.pack(side=LEFT, fill=Y, before=self.editwin.text)
+        self.textln.grid(column=0, row=1, sticky='ns')
+        #self.textln.pack(side=LEFT, fill=Y, before=self.editwin.text)
 
     def hide(self):
-        self.textln.pack_forget()
+        #self.textln.pack_forget()
+        self.textln.grid_forget()
 
     def focus_in_event(self, event=None):
         self.editwin.text.focus_set()

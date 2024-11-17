@@ -2,9 +2,10 @@
 import sys
 import os
 
+#Let the outdated idlefork have some rest and use builtin idle
 # add idlelib to the sys path
-head, tail = os.path.split(__file__)
-sys.path.insert(0, os.path.join(head, 'idlefork'))
+#head, tail = os.path.split(__file__)
+#sys.path.insert(0, os.path.join(head, 'idlefork'))
 
 try:
     

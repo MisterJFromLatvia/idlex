@@ -52,7 +52,8 @@ import imp
 import traceback
 import re
 
-from idlelib import macosxSupport
+#from idlelib import macosxSupport
+from idlelib import macosx as macosxSupport
 
 from idlexlib._version import __version__
 
@@ -75,7 +76,8 @@ else:
     import tkinter.messagebox as tkMessageBox
 
 
-from idlelib.configHandler import idleConf, IdleConfParser
+#from idlelib.configHandler import idleConf, IdleConfParser
+from idlelib.config import idleConf, IdleConfParser
 
 ansi_re = re.compile(r'\x01?\x1b\[(.*?)m\x02?')
 def strip_ansi(s):
@@ -181,10 +183,12 @@ def fix_tk86():
 
 def _hotpatch():
     # Fix numerous outstanding IDLE issues...
-    import idlelib.EditorWindow
+#    import idlelib.EditorWindow
+    import idlelib.editor
 
 
-    EditorWindowOrig = idlelib.EditorWindow.EditorWindow
+#    EditorWindowOrig = idlelib.EditorWindow.EditorWindow
+    EditorWindowOrig = idlelib.editor.EditorWindow
     class EditorWindow(EditorWindowOrig):
 
 
@@ -205,10 +209,28 @@ def _hotpatch():
 
         # Fix broken keybindings that has plagued IDLE for years.
         # Issue 12387, 4765, 13071, 6739, 5707, 11437
+        # def apply_bindings(self, keydefs=None):  # SUBCLASS to catch errors
+            # #return EditorWindowOrig.apply_bindings(self, keydefs)
+            # if keydefs is None:
+                # keydefs = self.Bindings.default_keydefs
+            # text = self.text
+            # text.keydefs = keydefs
+            # invalid = []
+            # for event, keylist in keydefs.items():
+                # for key in keylist:
+                    # try:
+                        # text.event_add(event, key)
+                    # except TclError as err:
+                        # #print(' Apply bindings error:', event, key)
+                        # invalid.append((event, key))
+            # if invalid:  # notify errors
+                # self._keybinding_error(invalid)
+                
+##Python version 3.10
         def apply_bindings(self, keydefs=None):  # SUBCLASS to catch errors
             #return EditorWindowOrig.apply_bindings(self, keydefs)
             if keydefs is None:
-                keydefs = self.Bindings.default_keydefs
+                keydefs = self.mainmenu.default_keydefs
             text = self.text
             text.keydefs = keydefs
             invalid = []
@@ -223,11 +245,38 @@ def _hotpatch():
                 self._keybinding_error(invalid)
 
 
+        # def RemoveKeybindings(self):  # SUBCLASS to catch errors
+            # "Remove the keybindings before they are changed."
+            # EditorWindow._invalid_keybindings = []
+            # # Called from configDialog.py
+            # self.Bindings.default_keydefs = keydefs = idleConf.GetCurrentKeySet()
+            # for event, keylist in keydefs.items():
+                # for key in keylist:
+                    # try:
+                        # self.text.event_delete(event, key)
+                    # except Exception as err:
+                        # print(' Caught event_delete error:', err)
+                        # print(' For %s, %s' % (event, key))
+                        # pass
+
+            # for extensionName in self.get_standard_extension_names():
+                # xkeydefs = idleConf.GetExtensionBindings(extensionName)
+                # if xkeydefs:
+                    # for event, keylist in xkeydefs.items():
+                        # for key in keylist:
+                            # try:
+                                # self.text.event_delete(event, key)
+                            # except Exception as err:
+                                # print(' Caught event_delete error:', err)
+                                # print(' For %s, %s' % (event, key))
+                                # pass
+                                
+##Python version 3.10
         def RemoveKeybindings(self):  # SUBCLASS to catch errors
             "Remove the keybindings before they are changed."
             EditorWindow._invalid_keybindings = []
             # Called from configDialog.py
-            self.Bindings.default_keydefs = keydefs = idleConf.GetCurrentKeySet()
+            self.mainmenu.default_keydefs = keydefs = idleConf.GetCurrentKeySet()
             for event, keylist in keydefs.items():
                 for key in keylist:
                     try:
@@ -312,7 +361,8 @@ def _hotpatch():
                     if hasattr(ins, methodname):
                         self.text.bind(vevent, getattr(ins, methodname))
 
-    idlelib.EditorWindow.EditorWindow = EditorWindow
+#    idlelib.EditorWindow.EditorWindow = EditorWindow
+    idlelib.editor.EditorWindow = EditorWindow
 
 def macosx_workaround():
     # restore "Options" menu on MacOSX
@@ -324,11 +374,15 @@ def macosx_workaround():
         if "options" not in c:
             menu_specs.insert(-2, ("options", "Options"))
 
-    import idlelib.EditorWindow
-    restore(idlelib.EditorWindow.EditorWindow.menu_specs)
+    #import idlelib.EditorWindow
+    #restore(idlelib.EditorWindow.EditorWindow.menu_specs)
+    import idlelib.editor
+    restore(idlelib.editor.EditorWindow.menu_specs)
 
-    import idlelib.PyShell
-    restore(idlelib.PyShell.PyShell.menu_specs)
+    #import idlelib.PyShell
+    #restore(idlelib.PyShell.PyShell.menu_specs)
+    import idlelib.pyshell
+    restore(idlelib.pyshell.PyShell.menu_specs)
 
 
 class devnull:
@@ -366,11 +420,15 @@ def main():
     # Force a reset on Bindings...
     # Without this, user reconfiguration of the key bindings within IDLE may
     # generate an error on MultiCall unbind.
-    import idlelib.Bindings
-    idlelib.Bindings.default_keydefs = idleConf.GetCurrentKeySet()
+    #import idlelib.Bindings
+    #idlelib.Bindings.default_keydefs = idleConf.GetCurrentKeySet()
+    import idlelib.mainmenu
+    idlelib.mainmenu.default_keydefs = idleConf.GetCurrentKeySet()
 
-    import idlelib.PyShell
-    idlelib.PyShell.main()
+    #import idlelib.PyShell
+    import idlelib.pyshell
+    #idlelib.PyShell.main()
+    idlelib.pyshell.main()
 
 if __name__ == '__main__':
     # start up IDLE with IdleX

@@ -55,8 +55,11 @@ paste-code-only=
 
 
 # get the IDLE configuration handler
-from idlelib.configHandler import idleConf
-from idlelib.EditorWindow import classifyws
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
+#Note: classifyws does not exist in idle python version 3.10.x file editor.py 
+#from idlelib.EditorWindow import classifyws
+from idlelib.editor import get_line_indent as classifyws
 import re
 
 class PastePyShell:

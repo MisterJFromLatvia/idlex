@@ -24,8 +24,10 @@ enable_editor=0
 enable_shell=1
 """
 
-from idlelib.configHandler import idleConf
-from idlelib.Delegator import Delegator
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
+#from idlelib.Delegator import Delegator
+from idlelib.delegator import Delegator
 import time
 import re
 import sys

@@ -81,8 +81,10 @@ else:
 
 EXTNAME = 'SearchBar'
 
-from idlelib.configHandler import idleConf
-from idlelib.SearchEngine import SearchEngine
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
+#from idlelib.SearchEngine import SearchEngine
+from idlelib.searchengine import SearchEngine
 
 
 class SearchBarSearchEngine(SearchEngine):

@@ -61,10 +61,14 @@ if WINREG == False:
 
 def get_python_executable():
     """ Get path to python.exe """
-    reg = W.ConnectRegistry(None, W.HKEY_CLASSES_ROOT)
-    p = W.OpenKey(reg, r'Python.File\shell\Edit with IDLE\command')
-    v = W.QueryValue(p, None)
-    path_to_python = shlex.split(v)[0]
+    #What about python installation which does not have registry options installed? do something else
+    #reg = W.ConnectRegistry(None, W.HKEY_CLASSES_ROOT)
+    #p = W.OpenKey(reg, r'Python.File\shell\Edit with IDLE\command')
+    #v = W.QueryValue(p, None)
+    #path_to_python = shlex.split(v)[0]
+    path_to_python = sys.executable
+    if os.path.isfile(os.path.join(os.path.split(sys.executable)[0], 'pythonw.exe'))
+        path_to_python = os.path.join(os.path.split(sys.executable)[0], 'pythonw.exe')
     return path_to_python
 
 def get_idlex_module():
@@ -97,7 +101,9 @@ def build_registry_value():
     if not os.path.exists(path_to_idlex):
         raise Exception('Path to IdleX is not valid.')
 
-    regval = '"%(python)s" "%(idlex)s" -e "%%1"' % {'python':path_to_python,
+    #regval = '"%(python)s" "%(idlex)s" -e "%%1"' % {'python':path_to_python,
+    #                                          'idlex':path_to_idlex}
+    regval = '"%(python)s" "%(idlex)s" -e "%%L %%*"' % {'python':path_to_python,
                                               'idlex':path_to_idlex}
     return regval
 
@@ -107,13 +113,14 @@ def create_registry_key():
     _create_registry_key_helper(regval)
 
 def _create_registry_key_helper(regval):
-    reg = W.ConnectRegistry(None, W.HKEY_CURRENT_USER)
-    p = W.OpenKey(reg, r'Software\Classes', 0, W.KEY_SET_VALUE)
-    p2 = W.CreateKey(p, 'Python.File\shell\Edit with IdleX\command')
-    W.SetValue(p2, '', W.REG_SZ, regval)
-    W.CloseKey(p2)
-    W.CloseKey(p)
-    W.CloseKey(reg)
+    print(f"Due to possible permission errors in registry, follow these steps to add Open with IdleX option in Windows Explorer. \n 1. Find 'Python.File' key which has edit with idle subkeys or similar keys. It should have command subkey. \n 2. Add value '{regval}' correctly to registry")
+    #reg = W.ConnectRegistry(None, W.HKEY_CURRENT_USER)
+    #p = W.OpenKey(reg, r'Software\Classes', 0, W.KEY_SET_VALUE)
+    #p2 = W.CreateKey(p, 'Python.File\shell\Edit with IdleX\command')
+    #W.SetValue(p2, '', W.REG_SZ, regval)
+    #W.CloseKey(p2)
+    #W.CloseKey(p)
+    #W.CloseKey(reg)
 
 def delete_registry_key():
     """ Delete the "Edit with IdleX" registry key """

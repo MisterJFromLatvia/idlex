@@ -67,7 +67,8 @@ eventloop-toggle=<Key-F7>
 INTERVAL = 100          # milliseconds
 INSTALL_DELAY = 250     # milliseconds
 
-from idlelib.configHandler import idleConf
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
 
 import sys
 if sys.version < '3':
@@ -76,8 +77,10 @@ else:
     from tkinter import *
 
 
-import idlelib.PyShell as PyShell
-import idlelib.ToolTip as ToolTip
+#import idlelib.PyShell as PyShell
+import idlelib.pyshell as PyShell
+#import idlelib.ToolTip as ToolTip
+import idlelib.tooltip as ToolTip
 import threading
 import time
 
@@ -320,7 +323,8 @@ class EventLoop(object):
         sb.set_label('EventLoop', text="")
         L = sb.labels['EventLoop']
         L.bind('<Button-1>', self.eventloop_toggle)
-        self.tooltip = ToolTip.ToolTip(L, TOOLTIP_TEXT)
+        #self.tooltip = ToolTip.ToolTip(L, TOOLTIP_TEXT)
+        self.tooltip = ToolTip.Hovertip(L, TOOLTIP_TEXT)
         self.display_state()
 
     def display_state(self):

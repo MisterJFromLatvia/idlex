@@ -38,13 +38,19 @@ else:
 
 
 # get the IDLE configuration handler
-from idlelib.configHandler import idleConf
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
 
 class Horizontal:   # must be the same name as the file for EditorWindow.py
                     # to load it.
 
+    # menudefs = [
+        # ('windows', [
+               # ('!Show Horizontal Scrollbar', '<<horizontal-show>>'),
+       # ]),]
+# for some reason windows dropdown does not exist and makes other code to not work, lets use option dropdown
     menudefs = [
-        ('windows', [
+        ('options', [
                ('!Show Horizontal Scrollbar', '<<horizontal-show>>'),
        ]),]
 
@@ -82,15 +88,22 @@ class Horizontal:   # must be the same name as the file for EditorWindow.py
 
     def _show_bar(self):
         # pack the bar so it is visible
-        widgets = self.editwin.text_frame.pack_slaves()
-        widgets = list(widgets) # list for Python 3 support
-        self.xbar.pack(side=tk.BOTTOM,
-                       fill=tk.BOTH,
-                       expand=0,
-                       before=widgets[0]) # pack before everything
+        #Note: no longer works because the grid manager is used in idle (somewhere.....)
+        #widgets = self.editwin.text_frame.pack_slaves()
+        #widgets = list(widgets) # list for Python 3 support
+        
+        #Note: correct column and row found by trial and error
+        self.xbar.grid(column=1, row=2, 
+                       sticky='we')
+        
+        #self.xbar.pack(side=tk.BOTTOM,
+        #               fill=tk.BOTH,
+        #               expand=0,
+        #               before=widgets[0]) # pack before everything
         self.editwin.setvar("<<horizontal-show>>", True)
 
     def _hide_bar(self):
         # forget the packing so it is not visible
-        self.xbar.pack_forget()
+        #self.xbar.pack_forget()
+        self.xbar.grid_forget()
         self.editwin.setvar("<<horizontal-show>>", False)

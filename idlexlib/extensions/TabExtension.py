@@ -68,13 +68,21 @@ else:
 
 
 
-import idlelib.EditorWindow as EditorWindow
-import idlelib.WindowList as WindowList
-from idlelib.ToolTip import ToolTipBase
-import idlelib.ToolTip as ToolTip
-import idlelib.FileList as FileList
-import idlelib.Bindings as Bindings
-from idlelib.configHandler import idleConf
+#import idlelib.EditorWindow as EditorWindow
+import idlelib.editor as EditorWindow
+#import idlelib.WindowList as WindowList
+import idlelib.window as WindowList
+#from idlelib.ToolTip import ToolTipBase
+#Note: yes, letters occasionally changed from uppercase to lowercase 
+from idlelib.tooltip import TooltipBase as ToolTipBase
+#import idlelib.ToolTip as ToolTip
+import idlelib.tooltip as ToolTip
+#import idlelib.FileList as FileList
+import idlelib.filelist as FileList
+#import idlelib.Bindings as Bindings
+import idlelib.mainmenu as Bindings
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
 from platform import python_version
 
 TAB_BAR_SIDE = 'top'  # 'bottom'

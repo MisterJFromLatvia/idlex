@@ -75,10 +75,18 @@ import sys
 import os
 import re
 import time
-from idlelib import PyShell
-from idlelib.ColorDelegator import ColorDelegator, make_pat
-from idlelib.configHandler import idleConf
-import idlelib.IOBinding
+#from idlelib import PyShell
+from idlelib import pyshell as PyShell
+#unused
+#from idlelib.ColorDelegator import ColorDelegator, make_pat
+from idlelib.colorizer import ColorDelegator, make_pat
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
+#has to be replaced everywhere in the code, no one liner available
+#Invalid command: import idlelib.iomenu as idlelib.IOBinding
+#Does not update existing namespace: sys.modules['idlelib.IOBinding'] = idlelib.iomenu
+#import idlelib.IOBinding
+import idlelib.iomenu
 import imp
 
 DEBUG = False
@@ -140,9 +148,14 @@ def dbprint(*args, **kwargs):
 
 if HAS_CYTHON or True:
     # add to filetypes in IOBinding
-    f = idlelib.IOBinding.IOBinding.filetypes
-    f.insert(1, ("Cython files", "*.pyx"))
-    f.insert(0, ("Python/Cython files", "*.py *.pyw *.pyx", "TEXT"))
+    #f = idlelib.IOBinding.IOBinding.filetypes
+    f = idlelib.iomenu.IOBinding.filetypes
+    #f.insert(1, ("Cython files", "*.pyx"))
+    #f.insert(0, ("Python/Cython files", "*.py *.pyw *.pyx", "TEXT"))
+    f_copy = [*f]
+    f_copy.insert(1, ("Cython files", "*.pyx"))
+    f_copy.insert(0, ("Python/Cython files", "*.py *.pyw *.pyx", "TEXT"))
+    idlelib.iomenu.IOBinding.filetypes = (*f_copy,)
 
 
 class CythonScript(object):

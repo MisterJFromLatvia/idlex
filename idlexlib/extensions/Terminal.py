@@ -68,7 +68,8 @@ if sys.version < '3':
 else:
     from tkinter import INSERT, END, SEL_FIRST, SEL_LAST, SEL
 
-from idlelib.configHandler import idleConf
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
 
 class Terminal:
 

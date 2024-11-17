@@ -27,9 +27,12 @@ else:
 from pprint import pprint
 
 # get the IDLE configuration handler
-from idlelib.configHandler import idleConf
-from idlelib import macosxSupport
-from idlelib.PyShell import PyShell
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
+#from idlelib import macosxSupport
+from idlelib import macosx as macosxSupport
+#from idlelib.PyShell import PyShell
+from idlelib.pyshell import PyShell
 
 
 # A right-click menu has been added. See http://bugs.python.org/issue1207589

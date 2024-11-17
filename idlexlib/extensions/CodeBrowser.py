@@ -65,11 +65,16 @@ else:
     from tkinter import *
 
 
-from idlelib.configHandler import idleConf
-from idlelib.Delegator import Delegator
-from idlelib.Percolator import Percolator
-from idlelib.ColorDelegator import ColorDelegator
-from idlelib.ToolTip import ToolTip
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
+#from idlelib.Delegator import Delegator
+from idlelib.delegator import Delegator
+#from idlelib.Percolator import Percolator
+from idlelib.percolator import Percolator
+#from idlelib.ColorDelegator import ColorDelegator
+from idlelib.colorizer import ColorDelegator
+#from idlelib.ToolTip import ToolTip
+from idlelib.tooltip import Hovertip as ToolTip
 import re
 
 

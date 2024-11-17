@@ -32,7 +32,8 @@ else:
 
 
 # get the IDLE configuration handler
-from idlelib.configHandler import idleConf
+#from idlelib.configHandler import idleConf
+from idlelib.config import idleConf
 
 from pprint import pprint
 
