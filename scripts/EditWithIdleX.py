@@ -67,7 +67,7 @@ def get_python_executable():
     #v = W.QueryValue(p, None)
     #path_to_python = shlex.split(v)[0]
     path_to_python = sys.executable
-    if os.path.isfile(os.path.join(os.path.split(sys.executable)[0], 'pythonw.exe'))
+    if os.path.isfile(os.path.join(os.path.split(sys.executable)[0], 'pythonw.exe')):
         path_to_python = os.path.join(os.path.split(sys.executable)[0], 'pythonw.exe')
     return path_to_python
 
@@ -113,7 +113,9 @@ def create_registry_key():
     _create_registry_key_helper(regval)
 
 def _create_registry_key_helper(regval):
-    print(f"Due to possible permission errors in registry, follow these steps to add Open with IdleX option in Windows Explorer. \n 1. Find 'Python.File' key which has edit with idle subkeys or similar keys. It should have command subkey. \n 2. Add value '{regval}' correctly to registry")
+    with open("NOTE HOW TO CONFIGURE OPEN WITH IDLEX MENU.txt", 'w') as note_file:
+        note_file.write(f"Due to possible permission errors in registry, follow these steps to add Open with IdleX option in Windows Explorer. \n 1. Find 'Python.File' key which has edit with idle subkeys or similar keys. It should have command subkey. \n 2. Add value '{regval}' correctly to registry. An example registry file below of working context menu showing IDLEX (replace 'user' with your username. If you remove the command ending '\"%L\" %*' , you will get IDLEX enabled shell.\n\n"+
+'Windows Registry Editor Version 5.00\n\n[HKEY_CLASSES_ROOT\\Python.File]\n\n[HKEY_CLASSES_ROOT\\Python.File\\Shell]\n\n[HKEY_CLASSES_ROOT\\Python.File\\Shell\\editwithidle]\n"MUIVerb"="&Edit with IDLE"\n"Subcommands"=""\n\n[HKEY_CLASSES_ROOT\\Python.File\\Shell\\editwithidle\\shell]\n\n[HKEY_CLASSES_ROOT\\Python.File\\Shell\\editwithidle\\shell\\edit310]\n"MUIVerb"="Edit with IDLE 3.10 (64-bit)"\n\n[HKEY_CLASSES_ROOT\\Python.File\\Shell\\editwithidle\\shell\\edit310\\command]\n@="\\"C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\pythonw.exe\\" -m idlelib \\"%L\\" %*"\n\n[HKEY_CLASSES_ROOT\\Python.File\\Shell\\editwithidle\\shell\\editx310]\n"MUIVerb"="Edit with IDLEX 3.10 (64-bit)"\n\n[HKEY_CLASSES_ROOT\\Python.File\\Shell\\editwithidle\\shell\\editx310\\command]\n@="\\"C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\pythonw.exe\\" \\"C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\idlexlib\\\\launch.py\\" -e \\"%L\\" %*"\n\n[HKEY_CLASSES_ROOT\\Python.File\\Shell\\editwithidle\\shell\\editx313]\n"MUIVerb"="Edit with IDLEX 3.13 (64-bit)"\n\n[HKEY_CLASSES_ROOT\\Python.File\\Shell\\editwithidle\\shell\\editx313\\command]\n@="\\"C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\pythonw.exe\\" \\"C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\lib\\\\site-packages\\\\idlexlib\\\\launch.py\\" -e \\"%L\\" %*"\n\n[HKEY_CLASSES_ROOT\\Python.NoConFile]\n\n[HKEY_CLASSES_ROOT\\Python.NoConFile\\Shell]\n\n[HKEY_CLASSES_ROOT\\Python.NoConFile\\Shell\\editwithidle]\n"MUIVerb"="&Edit with IDLE"\n"Subcommands"=""\n\n[HKEY_CLASSES_ROOT\\Python.NoConFile\\Shell\\editwithidle\\shell]\n\n[HKEY_CLASSES_ROOT\\Python.NoConFile\\Shell\\editwithidle\\shell\\edit310]\n"MUIVerb"="Edit with IDLE 3.10 (64-bit)"\n\n[HKEY_CLASSES_ROOT\\Python.NoConFile\\Shell\\editwithidle\\shell\\edit310\\command]\n@="\\"C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\pythonw.exe\\" -m idlelib \\"%L\\" %*"\n\n[HKEY_CLASSES_ROOT\\Python.NoConFile\\Shell\\editwithidle\\shell\\editx310]\n"MUIVerb"="Edit with IDLEX 3.10 (64-bit)"\n\n[HKEY_CLASSES_ROOT\\Python.NoConFile\\Shell\\editwithidle\\shell\\editx310\\command]\n@="\\"C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\pythonw.exe\\" \\"C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python310\\\\lib\\\\site-packages\\\\idlexlib\\\\launch.py\\" -e \\"%L\\" %*"\n\n[HKEY_CLASSES_ROOT\\Python.NoConFile\\Shell\\editwithidle\\shell\\editx313]\n"MUIVerb"="Edit with IDLEX 3.13 (64-bit)"\n\n[HKEY_CLASSES_ROOT\\Python.NoConFile\\Shell\\editwithidle\\shell\\editx313\\command]\n@="\\"C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\pythonw.exe\\" \\"C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python313\\\\lib\\\\site-packages\\\\idlexlib\\\\launch.py\\" -e \\"%L\\" %*"\n\n')
     #reg = W.ConnectRegistry(None, W.HKEY_CURRENT_USER)
     #p = W.OpenKey(reg, r'Software\Classes', 0, W.KEY_SET_VALUE)
     #p2 = W.CreateKey(p, 'Python.File\shell\Edit with IdleX\command')
@@ -126,7 +128,7 @@ def delete_registry_key():
     """ Delete the "Edit with IdleX" registry key """
     reg = W.ConnectRegistry(None, W.HKEY_CURRENT_USER)
     p = W.OpenKey(reg, r'Software\Classes\Python.File\shell', 0, W.KEY_ALL_ACCESS)
-    p2 = W.DeleteKey(p, 'Edit with IdleX\command')
+    p2 = W.DeleteKey(p, r'Edit with IdleX\command')
     p3 = W.DeleteKey(p, 'Edit with IdleX')
     W.CloseKey(p)
     W.CloseKey(reg)
@@ -142,7 +144,7 @@ def successbox(op=''):
 def add_menu_item():
     try:
         create_registry_key()
-        successbox("'Edit with IdleX' added.")
+        successbox("Registy modify operation has been temporarily disabled. Please follow instructions in the generated file 'NOTE HOW TO CONFIGURE OPEN WITH IDLEX MENU.txt' how to add context menu 'Edit with IdleX' without messing up the registry. When you no longer need this program, you can remove 'Edit with IdleX' context menu the same way you added it. Good luck.")
     except Exception as err:
         errorbox(err)
 

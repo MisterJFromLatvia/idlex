@@ -1,3 +1,36 @@
+Version 1.22.3 released by MisterJFromLatvia
+============================================
+
+Released 2024-11-22
+
+This release is developed with and tested with Python 3.10 and Python 3.13
+
+Use this version only if original version no longer works (it is expected that original version of IDLEX does not work on Python 3.10 and above). I am releasing the update for IDLEX because the original IDLEX did not work with Python 3.10.4 (errors originating from IDLE library, fixed) and Python 3.13.0 (pip refusing to acknowledge idlex existence, fixed) on my system.
+
+
+Updated installation instructions
+=================================
+
+It might be required to update setuptools first.
+
+    scripts\pip install setuptools
+
+Change directory to this repository before running the following command. You can skip this step if you do no want to build idlex-1.22.3.tar.gz required for installation yourself, I have included this file in this repository.
+
+    python setup.py sdist
+
+Now change directory to your python installation (internet connection is needed). If you do installation this way, you can simply uninstall IDLEX with scripts\pip uninstall idlex .
+
+    scripts\pip install idlex-1.22.3.tar.gz
+
+Update 1.22.3 footnote from developer
+=====================================
+
+"Ooooooh, I never seen this feature before on IDLE. So that's how it's supposed to work."
+
+Original README.md below
+========================
+
 ![IdlexX logo](idlex_logo.png)
 ==================================
 

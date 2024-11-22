@@ -48,7 +48,10 @@ from idlexlib.extensionManager import extensionManager
 import idlelib
 import os
 import __main__
-import imp
+from packaging.version import Version as VersionSafeName
+from platform import python_version as python_versionSafeName
+if VersionSafeName(python_versionSafeName()) <= VersionSafeName("3.10.4"):
+    import imp
 import traceback
 import re
 

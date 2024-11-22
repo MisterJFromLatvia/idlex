@@ -49,17 +49,28 @@ else:
 
 
 
-
-import imp
+from packaging.version import Version as VersionSafeName
+from platform import python_version as python_versionSafeName
+if VersionSafeName(python_versionSafeName()) <= VersionSafeName("3.10.4"):
+    import imp
 try:
     import importlib
     HAS_IMPORTLIB = True
 except ImportError:
     HAS_IMPORTLIB = False
+    assert VersionSafeName(python_versionSafeName()) <= VersionSafeName("3.10.4"), "IdleX can not installed, please update your python installation"
 
 #from idlelib.configHandler import idleConf, IdleConfParser
 from idlelib.config import idleConf, IdleConfParser
 import os
+
+#Added to support python 3.13.0 and up
+def readline_generator(f):
+    line = f.readline()
+    while line:
+        yield line
+        line = f.readline()
+
 
 def make_config_parser(cfg):
     """ Stuff Configration String into a fake file and return an IDLE config parser """
@@ -71,7 +82,10 @@ def make_config_parser(cfg):
     # parse the configuration from the fake file
     confparse = IdleConfParser('')
     try:
-        confparse.readfp(fp)
+        if VersionSafeName(python_versionSafeName()) <= VersionSafeName("3.10.4"):
+            confparse.readfp(fp)
+        else:
+            confparse.read_file(readline_generator(fp))
     except BaseException as e:
         print('\n Configuration Parse Error', e)
         return None

@@ -87,7 +87,12 @@ from idlelib.config import idleConf
 #Does not update existing namespace: sys.modules['idlelib.IOBinding'] = idlelib.iomenu
 #import idlelib.IOBinding
 import idlelib.iomenu
-import imp
+from packaging.version import Version as VersionSafeName
+from platform import python_version as python_versionSafeName
+if VersionSafeName(python_versionSafeName()) <= VersionSafeName("3.10.4"):
+    import imp
+else:
+    import importlib
 
 DEBUG = False
 
@@ -95,7 +100,10 @@ HAS_CYTHON = True
 HAS_RELOAD = False
 
 try:
-    imp.find_module('cython')
+    if VersionSafeName(python_versionSafeName()) <= VersionSafeName("3.10.4"):
+        imp.find_module('cython')
+    else:
+        importlib.util.find_spec('cython')
 except ImportError:
     HAS_CYTHON = False
 

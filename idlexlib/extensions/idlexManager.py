@@ -47,7 +47,10 @@ import sys
 
 import os
 import re
-import imp
+from packaging.version import Version as VersionSafeName
+from platform import python_version as python_versionSafeName
+if VersionSafeName(python_versionSafeName()) <= VersionSafeName("3.10.4"):
+    import imp
 import __main__
 
 if sys.version < '3':
